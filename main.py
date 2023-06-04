@@ -3,9 +3,9 @@ import sys
 import os
 import random
 import time
-import colorama
 import subprocess
 import ctypes
+import colorama
 from winreg import *
 
 def connect():
@@ -80,16 +80,23 @@ def newMac(index):
 def main():
     os.system('wmic nic get name, index')
     i = str(input("Index: "))
+    disconnected = 0
+    ping = 0
     while True:
         x = connect()
+        os.system('cls')
         if x:
             print(f'{success()}Internet still up.')
+            ping += 1
         else:
             print(f'{info()}Disconnected! Changing to a new MAC address.')
             newMac(i)
+            disconnected += 1
             print(f'{info()}Cooldown 5 seconds after changing MAC address.')
             time.sleep(5)
+        print(f'Pinged: {colorama.Fore.GREEN}{ping}{colorama.Fore.WHITE}\nDisconnected: {colorama.Fore.RED}{disconnected}{colorama.Fore.WHITE}')
         time.sleep(1)
+        
 
 if is_admin():
     main()
