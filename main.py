@@ -95,7 +95,7 @@ def main():
             print(f'{info()}Cooldown 5 seconds after changing MAC address.')
             time.sleep(5)
         print(f'Pinged: {colorama.Fore.GREEN}{ping}{colorama.Fore.WHITE}\nDisconnected: {colorama.Fore.RED}{disconnected}{colorama.Fore.WHITE}')
-        time.sleep(1)
+        time.sleep(5)
         
 
 if is_admin():
