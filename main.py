@@ -1,10 +1,19 @@
+import urllib.request
 import sys
 import os
 import random
-import colorama
+import time
 import subprocess
 import ctypes
+import colorama
 from winreg import *
+
+def connect():
+    try:
+        urllib.request.urlopen('http://google.com') #Python 3.x
+        return True
+    except:
+        return False
 
 def is_admin():
     try:
@@ -61,24 +70,72 @@ def newMac(index):
         cmd(f"wmic path win32_networkadapter where index={index} call enable")
         print(f"{success()}Successfully updated MAC address")
         print(f"{info()}New MAC: {mac}")
-        proceed()
         return True
     
     except Exception as e:
         print("\n"+err()+f"{e}")
         proceed()
         return False
-
+    
 def main():
+    os.system('cls')
+    choice = 0
+    while choice < 1 or choice > 2:
+        try:
+            choice = int(input("Select a mode\n\n1) Automatically change when disconnected from internet\n2) One-time randomly change MAC address\n\n> "))
+            os.system('cls')
+        except:
+            pass
+        break
+
+    os.system('wmic nic get name, index')
+    i = int(input("Index: "))
+    while i < 1:
+        try:
+            os.system('wmic nic get name, index')
+            i = int(input("Index: "))
+        except:
+            os.system('cls')
+        break
+    
+    if choice == 1:
+        os.system('cls')
+        disconnected = 0
+        ping = 0
+        try:
+            while True:
+                print('Pinging...')
+                x = connect()
+                os.system('cls')
+                if x:
+                    print(f'{success()}Internet still up.')
+                    ping += 1
+                else:
+                    print(f'{info()}Disconnected! Changing to a new MAC address.')
+                    newMac(i)
+                    disconnected += 1
+                    print(f'{info()}Cooldown 5 seconds after changing MAC address.')
+                    time.sleep(5)
+                print(f'Pinged: {colorama.Fore.GREEN}{ping}{colorama.Fore.WHITE}\nDisconnected: {colorama.Fore.RED}{disconnected}{colorama.Fore.WHITE}')
+                time.sleep(2)
+
+        except Exception as e:
+            print(e)
+            proceed()
+
+    elif choice == 2:
+        try:
+            newMac(i)
+            proceed()
+        except Exception as e:
+            print(e)
+            proceed()
+
+if is_admin():
     try:
-        os.system('wmic nic get name, index')
-        index = str(input('Index: '))
-        newMac(index)
+        main()
     except Exception as e:
         print(e)
-
-admin = is_admin()
-if admin:
-    main()
+        proceed()
 else:
     ctypes.windll.shell32.ShellExecuteW(None, "runas", '"'+sys.executable+'"', '"' + os.path.basename(__file__) + '"', None, 1)
