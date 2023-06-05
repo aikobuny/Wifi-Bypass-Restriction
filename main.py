@@ -5,8 +5,18 @@ import random
 import time
 import subprocess
 import ctypes
-import colorama
 from winreg import *
+
+class bcolors:
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    END = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 def connect():
     try:
@@ -22,13 +32,13 @@ def is_admin():
         return False
 
 def info():
-    return colorama.Fore.CYAN+'[i] '+colorama.Fore.WHITE
+    return bcolors.CYAN+'[i] '+bcolors.END
 def success():
-    return colorama.Fore.GREEN+'[✓] '+colorama.Fore.WHITE
+    return bcolors.GREEN+'[✓] '+bcolors.END
 def err():
-    return colorama.Fore.RED+'[x] '+colorama.Fore.WHITE
+    return bcolors.RED+'[x] '+bcolors.END
 def warning():
-    return colorama.Fore.YELLOW+'[!] '+colorama.Fore.WHITE
+    return bcolors.YELLOW+'[!] '+bcolors.END
 def proceed():
     input("\nPress enter to continue...")
 
@@ -56,7 +66,7 @@ def newMac(index):
             CreateKey(HKEY_LOCAL_MACHINE, keyval)
 
         Registrykey= OpenKey(HKEY_LOCAL_MACHINE, keyval, 0, KEY_WRITE)
-        print(f'{info()}Setting randomized MAC for {colorama.Fore.BLUE}NetworkAddress{colorama.Fore.WHITE}... ')
+        print(f'{info()}Setting randomized MAC for {bcolors.BLUE}NetworkAddress{bcolors.END}... ')
         mac = randomMac()
         SetValueEx(Registrykey,"NetworkAddress", 0, REG_SZ, mac)
         CloseKey(Registrykey)
@@ -82,21 +92,19 @@ def main():
     choice = 0
     while choice < 1 or choice > 2:
         try:
-            choice = int(input("Select a mode\n\n1) Automatically change when disconnected from internet\n2) One-time randomly change MAC address\n\n> "))
+            choice = int(input("{a}Select a mode{b}\n\n 1) Automatically change when disconnected from internet\n 2) One-time randomly change MAC address\n\nMode: ".format(a=bcolors.UNDERLINE, b=bcolors.END)))
             os.system('cls')
         except:
             pass
-        break
 
     os.system('wmic nic get name, index')
     i = int(input("Index: "))
     while i < 1:
         try:
-            os.system('wmic nic get name, index')
+            os.system('cls && wmic nic get name, index')
             i = int(input("Index: "))
         except:
             os.system('cls')
-        break
     
     if choice == 1:
         os.system('cls')
@@ -116,7 +124,7 @@ def main():
                     disconnected += 1
                     print(f'{info()}Cooldown 5 seconds after changing MAC address.')
                     time.sleep(5)
-                print(f'Pinged: {colorama.Fore.GREEN}{ping}{colorama.Fore.WHITE}\nDisconnected: {colorama.Fore.RED}{disconnected}{colorama.Fore.WHITE}')
+                print(f'Pinged: {bcolors.GREEN}{ping}{bcolors.END}\nDisconnected: {bcolors.RED}{disconnected}{bcolors.END}')
                 time.sleep(2)
 
         except Exception as e:
