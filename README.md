@@ -5,4 +5,4 @@ A simple and easy to use tool to change your MAC Address randomly when you're di
 - Windows 7+
 - [Python 3.9+](https://www.python.org/)
 
-**Run the main file and select mode and adapter.**
+**Run the main file, select mode and adapter.**
