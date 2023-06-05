@@ -89,25 +89,34 @@ def newMac(index):
     
 def main():
     os.system('cls')
-    choice = 0
+    choice = -1
     while choice < 1 or choice > 2:
         try:
             choice = int(input("{a}Select a mode{b}\n\n 1) Automatically change when disconnected from internet\n 2) One-time randomly change MAC address\n\nMode: ".format(a=bcolors.UNDERLINE, b=bcolors.END)))
             os.system('cls')
+            break
         except:
             pass
 
-    os.system('wmic nic get name, index')
-    i = int(input("Index: "))
+    i = -1
     while i < 1:
         try:
             os.system('cls && wmic nic get name, index')
             i = int(input("Index: "))
+            break
         except:
             os.system('cls')
     
     if choice == 1:
         os.system('cls')
+        cooldown = 0
+        while 1 and cooldown < 1:
+            try:
+                cooldown = int(input("Cooldown (seconds): "))
+                break
+            except:
+                os.system('cls')
+
         disconnected = 0
         ping = 0
         try:
@@ -125,7 +134,7 @@ def main():
                     print(f'{info()}Cooldown 5 seconds after changing MAC address.')
                     time.sleep(5)
                 print(f'Pinged: {bcolors.GREEN}{ping}{bcolors.END}\nDisconnected: {bcolors.RED}{disconnected}{bcolors.END}')
-                time.sleep(2)
+                time.sleep(cooldown)
 
         except Exception as e:
             print(e)
