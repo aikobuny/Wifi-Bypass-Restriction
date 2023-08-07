@@ -133,10 +133,6 @@ def main():
                     disconnected += 1
                     print(f'{info()}Cooldown 5 seconds after changing MAC address.')
                     time.sleep(5)
-                    hot_name = "DSFI 5G"
-                    key = "dsfi1010#"
-                    cmd("netsh wlan set hostednetwork mode=allow ssid="+hot_name+" key="+key)
-                    cmd('netsh wlan start hostednetwork')
                 print(f'Pinged: {bcolors.GREEN}{ping}{bcolors.END}\nDisconnected: {bcolors.RED}{disconnected}{bcolors.END}')
                 time.sleep(cooldown)
 
